@@ -17,41 +17,33 @@ RSpec.describe "/transactions", type: :request do
   # Transaction. As you add validations to Transaction, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    # skip("Add a hash of attributes valid for your model")
+    {
+      payer: "PepsiCo",
+      points: 5000,
+      date: "2021-07-31T15:00:00Z"
+    }
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    # skip("Add a hash of attributes invalid for your model")
+    {      
+      payer: "",
+      points: "",
+      date: ""
+    }
   }
 
-  describe "GET /index" do
+  # 3 routes
+  # get /payer_balances trans#index
+  # post /add_transaction trans#create_t
+  # post /spend_points trans#spend_pts
+
+  describe "GET /payer_balances" do
     it "renders a successful response" do
       Transaction.create! valid_attributes
-      get transactions_url
-      expect(response).to be_successful
-    end
-  end
-
-  describe "GET /show" do
-    it "renders a successful response" do
-      transaction = Transaction.create! valid_attributes
-      get transaction_url(transaction)
-      expect(response).to be_successful
-    end
-  end
-
-  describe "GET /new" do
-    it "renders a successful response" do
-      get new_transaction_url
-      expect(response).to be_successful
-    end
-  end
-
-  describe "GET /edit" do
-    it "render a successful response" do
-      transaction = Transaction.create! valid_attributes
-      get edit_transaction_url(transaction)
-      expect(response).to be_successful
+      get transactions_url.json
+      expect(response).to have_http_status(:success)
     end
   end
 
@@ -83,48 +75,4 @@ RSpec.describe "/transactions", type: :request do
     end
   end
 
-  describe "PATCH /update" do
-    context "with valid parameters" do
-      let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
-      }
-
-      it "updates the requested transaction" do
-        transaction = Transaction.create! valid_attributes
-        patch transaction_url(transaction), params: { transaction: new_attributes }
-        transaction.reload
-        skip("Add assertions for updated state")
-      end
-
-      it "redirects to the transaction" do
-        transaction = Transaction.create! valid_attributes
-        patch transaction_url(transaction), params: { transaction: new_attributes }
-        transaction.reload
-        expect(response).to redirect_to(transaction_url(transaction))
-      end
-    end
-
-    context "with invalid parameters" do
-      it "renders a successful response (i.e. to display the 'edit' template)" do
-        transaction = Transaction.create! valid_attributes
-        patch transaction_url(transaction), params: { transaction: invalid_attributes }
-        expect(response).to be_successful
-      end
-    end
-  end
-
-  describe "DELETE /destroy" do
-    it "destroys the requested transaction" do
-      transaction = Transaction.create! valid_attributes
-      expect {
-        delete transaction_url(transaction)
-      }.to change(Transaction, :count).by(-1)
-    end
-
-    it "redirects to the transactions list" do
-      transaction = Transaction.create! valid_attributes
-      delete transaction_url(transaction)
-      expect(response).to redirect_to(transactions_url)
-    end
-  end
 end

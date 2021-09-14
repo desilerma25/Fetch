@@ -1,4 +1,6 @@
 class Transaction < ApplicationRecord
+    validates :payer, :points, :date, presence: true
+    validates :points, numericality: true
 
     def self.total_points
         total = []
